@@ -69,6 +69,61 @@ public class Converter {
             
             // INSERT YOUR CODE HERE
             
+            //declare your arrays
+            JSONArray colHeaders = new JSONArray();
+            JSONArray rowHeaders = new JSONArray();
+            JSONArray data = new JSONArray();
+            
+            //declare your object
+            JSONObject jsonObject = new JSONObject();
+            
+            
+            //Fill the ColHeaders Array with the objects from the first iterator array 
+            
+            //Bring the first array in to a string array
+            String[] stringArray = null;
+            if (iterator.hasNext()){
+                stringArray = iterator.next();
+            }
+            
+            //Using a foor loop, populate the JSONArray colHeaders
+            for (int i = 0; i < stringArray.length; ++i){
+                colHeaders.add(stringArray[i]);
+            }
+            
+            /*Repeat the process for rowHeaders and data (we are going to
+            combine these two together under one operation
+            so the code wont be so massive)*/
+            
+            //we use a while loop due to us populating 2 arrays at once
+            while (iterator.hasNext()){
+               
+                stringArray = iterator.next();
+                
+                //bring the first line of each column into rowHeader
+                for (int i = 0; i < 1; i++){
+                    rowHeaders.add(stringArray[i]);
+                }
+                
+                // declare another array for the data variables
+                List <Integer> DataInt = new ArrayList<Integer>();
+                
+                //Begin populating that declared array with data. We will
+                //convert string to integers and add them to the array.
+                for (int j = 1; j < stringArray.length; ++j){
+                    DataInt.add(Integer.parseInt(stringArray[j]));
+                }
+                //Add the dataInt to the Data Array
+                data.add(DataInt);
+                        
+            }
+            
+                //take the JSONObject and add the diddly doos
+                jsonObject.put("colHeaders" , colHeaders);
+                jsonObject.put("rowHeaders", rowHeaders);
+                jsonObject.put("data",data);
+                
+                results = JSONValue.toJSONString(jsonObject);
         }        
         catch(Exception e) { return e.toString(); }
         
@@ -86,6 +141,8 @@ public class Converter {
             CSVWriter csvWriter = new CSVWriter(writer, ',', '"', '\n');
             
             // INSERT YOUR CODE HERE
+            
+            
             
         }
         
