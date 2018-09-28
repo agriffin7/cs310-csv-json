@@ -167,20 +167,26 @@ public class Converter {
             
             csvWriter.writeNext(colHeadersString);
             
-            for (int i = 0; i < rowHeadersString.length; i++){
-                rowHeadersString[i] = (String)rowHeaders.get(i);
-            }
-            for (int i = 0; i < dataString.length; i++){
+            //get the information for rowHeaderString and Data String
+            for (int i = 0; i < rowHeaders.size(); i++){
+                rowHeadersString[i] = rowHeaders.get(i).toString();
                 dataString[i] = data.get(i).toString();
             }
             
-            //we must now write ONE header,then ONE array
-            int totalLength = rowHeaders.size() + data.size();
-            String row;
-            
-            for(int i = 0; i < totalLength; i++){
-                row = rowHeadersString[i];
+            for(int i = 0; i < dataString.length; ++i){
+                JSONArray dataValues =(JSONArray)parser.parse(dataString[i]);
                 
+                String[] row = new String[dataValues.size()+1];
+                
+                row[0] = rowHeadersString[i];
+                
+                for(int j = 0; j < row.length; j++){
+                    for (int k = 0; k < dataValues.size(); k++){
+                        row[k+1] = dataValues.get(k).toString();
+                    }
+                }
+                
+                csvWriter.writeNext(row);
             }
             
             //convert it all to string
