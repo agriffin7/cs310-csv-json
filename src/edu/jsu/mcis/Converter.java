@@ -141,9 +141,51 @@ public class Converter {
             CSVWriter csvWriter = new CSVWriter(writer, ',', '"', '\n');
             
             // INSERT YOUR CODE HERE
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject)parser.parse(jsonString);
             
+            //declare your array values
+            JSONArray colHeaders = new JSONArray();
+            JSONArray rowHeaders = new JSONArray();
+            JSONArray data = new JSONArray();
             
+            //take your JSONObjects and put it in the array variables
+            colHeaders = (JSONArray) jsonObject.get("colHeaders");
+            rowHeaders = (JSONArray) jsonObject.get("rowHeaders");
+            data = (JSONArray) jsonObject.get("data");
             
+            //create string arrays
+            String[] colHeadersString = new String[colHeaders.size()];
+            String[] rowHeadersString = new String[rowHeaders.size()];
+            String[] dataString = new String[data.size()];
+            
+            //populate the colHeadersString Array by getting data out from the
+            //colHeaders and casting it as a string
+            for (int i = 0; i < colHeadersString.length; i++){
+                colHeadersString[i] = (String)colHeaders.get(i);
+            }
+            
+            csvWriter.writeNext(colHeadersString);
+            
+            for (int i = 0; i < rowHeadersString.length; i++){
+                rowHeadersString[i] = (String)rowHeaders.get(i);
+            }
+            for (int i = 0; i < dataString.length; i++){
+                dataString[i] = data.get(i).toString();
+            }
+            
+            //we must now write ONE header,then ONE array
+            int totalLength = rowHeaders.size() + data.size();
+            String row;
+            
+            for(int i = 0; i < totalLength; i++){
+                row = rowHeadersString[i];
+                
+            }
+            
+            //convert it all to string
+            results = writer.toString();
+ 
         }
         
         catch(Exception e) { return e.toString(); }
